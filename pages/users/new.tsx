@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import HeaderLogin from '../layout/headerLogin';
 import Footer from '../layout/footer';
 import { Item } from '../../types/type';
-import { User, Users } from '../../types/type';
+import { Users2, Users } from '../../types/type';
 import { Event } from '../../types/type';
 
 function UsersNew() {
@@ -61,7 +61,7 @@ function UsersNew() {
     }
   };
 
-  const validate = (values: Users) => {
+  const validate = (values: Users2) => {
     const errors = {} as Users;
 
     const emailReg = /.+@.+\..+/;

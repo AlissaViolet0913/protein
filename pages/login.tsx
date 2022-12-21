@@ -6,7 +6,7 @@ import Link from 'next/link';
 import HeaderLogin from './layout/headerLogin';
 import ItemDisplay from './items';
 import { GetServerSideProps } from 'next';
-import { Item,User,Users } from './../types/type';
+import { Item, User, Users } from './../types/type';
 
 export default function UserLogin(cookieData: Item) {
   const router = useRouter();
@@ -119,12 +119,7 @@ export default function UserLogin(cookieData: Item) {
               ユーザーが見つかりません。もう一度入力してください。
             </h3>
           </hgroup>
-          <form
-            className={style.form}
-            onSubmit={
-              handler
-            }
-          >
+          <form className={style.form} onSubmit={handler}>
             <div className={style.group}>
               <input
                 type="email"

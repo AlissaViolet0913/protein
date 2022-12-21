@@ -188,7 +188,7 @@ any) => {
           <h2 className={styles.title_purchased} id="user_purchased">
             ご購入履歴
           </h2>
-          {itemsArray.map((item: any,index:any) => {
+          {itemsArray.map((item: any, index: any) => {
             return (
               <div key={index}>
                 <div>
@@ -253,7 +253,7 @@ any) => {
           >
             継続中の定期購入
           </h2>
-          {subscriptionArray.map((items: Item,index:any) => {
+          {subscriptionArray.map((items: Item, index: any) => {
             return (
               <div key={index}>
                 <div>
@@ -330,67 +330,69 @@ any) => {
           >
             定期購入の履歴
           </h2>
-          {subscriptionHistoriesArray.map((items2: any,index:any) => {
-            return (
-              <div key={index}>
-                <div>
-                  <h3>終了日時：{items2.date}</h3>
+          {subscriptionHistoriesArray.map(
+            (items2: any, index: any) => {
+              return (
+                <div key={index}>
                   <div>
-                    <div className={styles.list}>
-                      <Image
-                        src={items2.imageUrl}
-                        width={260}
-                        height={260}
-                        alt="商品画像"
-                        className={styles.img}
-                      />
-                      <div className={styles.itemDetail}>
-                        <Link
-                          href={`./items/${encodeURIComponent(
-                            items2.itemId
-                          )}`}
-                        >
-                          <h4>{items2.name}</h4>
-                        </Link>
-                        <p>
-                          フレーバー &nbsp;&nbsp;&nbsp;&nbsp;
-                          <span className={styles.style}>
-                            &nbsp;{items2.flavor}&nbsp;
-                          </span>
-                        </p>
-                        <p>
-                          価格 &nbsp;&nbsp;&nbsp;&nbsp; ¥
-                          <span className={styles.style}>
-                            &nbsp;{items2.price}&nbsp;
-                          </span>
-                        </p>
-                        <p>
-                          数量&nbsp;&nbsp;&nbsp;&nbsp;
-                          <span className={styles.style}>
-                            &nbsp;{items2.countity}&nbsp;
-                          </span>
-                        </p>
-                        <p>
-                          小計 &nbsp;&nbsp;&nbsp;&nbsp; ¥
-                          <span className={styles.style}>
-                            &nbsp;{items2.price * items2.countity}
-                            &nbsp;
-                          </span>
-                        </p>
-                        <p>
-                          定期購入 &nbsp;&nbsp;&nbsp;&nbsp;
-                          <span className={styles.style}>
-                            &nbsp; 終了 &nbsp;
-                          </span>
-                        </p>
+                    <h3>終了日時：{items2.date}</h3>
+                    <div>
+                      <div className={styles.list}>
+                        <Image
+                          src={items2.imageUrl}
+                          width={260}
+                          height={260}
+                          alt="商品画像"
+                          className={styles.img}
+                        />
+                        <div className={styles.itemDetail}>
+                          <Link
+                            href={`./items/${encodeURIComponent(
+                              items2.itemId
+                            )}`}
+                          >
+                            <h4>{items2.name}</h4>
+                          </Link>
+                          <p>
+                            フレーバー &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span className={styles.style}>
+                              &nbsp;{items2.flavor}&nbsp;
+                            </span>
+                          </p>
+                          <p>
+                            価格 &nbsp;&nbsp;&nbsp;&nbsp; ¥
+                            <span className={styles.style}>
+                              &nbsp;{items2.price}&nbsp;
+                            </span>
+                          </p>
+                          <p>
+                            数量&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span className={styles.style}>
+                              &nbsp;{items2.countity}&nbsp;
+                            </span>
+                          </p>
+                          <p>
+                            小計 &nbsp;&nbsp;&nbsp;&nbsp; ¥
+                            <span className={styles.style}>
+                              &nbsp;{items2.price * items2.countity}
+                              &nbsp;
+                            </span>
+                          </p>
+                          <p>
+                            定期購入 &nbsp;&nbsp;&nbsp;&nbsp;
+                            <span className={styles.style}>
+                              &nbsp; 終了 &nbsp;
+                            </span>
+                          </p>
+                        </div>
                       </div>
+                      <hr />
                     </div>
-                    <hr />
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            }
+          )}
         </section>
       </div>
       <Footer />

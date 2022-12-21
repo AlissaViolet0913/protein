@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import styles from '../../styles/detail_user.module.css';
 import Link from 'next/link';
-import Header from '../layout/header';
-import Footer from '../layout/footer';
+import Header from '../src/layout/header';
+import Footer from '../src/layout/footer';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { useState, useEffect } from 'react';

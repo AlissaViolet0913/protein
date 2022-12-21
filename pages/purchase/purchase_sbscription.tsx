@@ -1,10 +1,10 @@
 import styles from '../../styles/purchase.module.css';
 import Head from 'next/head';
 import Link from 'next/link';
-import Header from '../layout/header';
+import Header from '../src/layout/header';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import Footer from '../layout/footer';
+import Footer from '../src/layout/footer';
 import { Item } from '../../types/type';
 
 export const getServerSideProps: GetServerSideProps = async (

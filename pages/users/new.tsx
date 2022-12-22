@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import HeaderLogin from '../layout/headerLogin';
 import Footer from '../layout/footer';
 import { Item } from '../../types/type';
-import { Users2, Users } from '../../types/type';
+import { User, Users, Users2 } from '../../types/type';
 import { Event } from '../../types/type';
 
 function UsersNew() {

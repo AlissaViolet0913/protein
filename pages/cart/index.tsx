@@ -49,7 +49,7 @@ const Cart: NextPage<{ carts: any, cookies: Item }> = ({ carts, cookies }) => {
 
   // cartsの削除【始まり】
   function deleteItem(cart: Item) {
-    fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/carts/${cart.id}`, {
+    fetch(`/api/carts/${cart.id}`, {
       method: 'DELETE',
     });
     router.reload();

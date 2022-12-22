@@ -56,7 +56,7 @@ export default function FavoriteList({ itemsArray4 }: Favorite) {
   // お気に入り情報の削除
   function deleteItem(favoriteItem: Favorite) {
     fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN}/api/favorites/${favoriteItem.id}`,
+      `/api/favorites/${favoriteItem.id}`,
       {
         method: 'DELETE',
       }

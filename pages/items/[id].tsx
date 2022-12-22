@@ -172,7 +172,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       return;
     } else {
       fetch(
-        `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionCart/`,
+        `/api/subscriptionCart/`,
         {
           method: 'POST',
           headers: {

@@ -3,73 +3,74 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   rewrites: async () => {
+    const dataUrl = process.env.NEXT_PUBLIC_PROTEIN_DATA
     return [
       {
         source: '/api/items',
-        destination: 'http://localhost:8000/items',
+        destination: `${dataUrl}/items`,
       },
       {
         source: '/api/items/:slug',
-        destination: 'http://localhost:8000/items/:slug',
+        destination: `${dataUrl}/items/:slug`,
       },
 
       {
         source: '/api/users',
-        destination: 'http://localhost:8000/users',
+        destination: `${dataUrl}/users`,
       },
       {
         source: '/api/users/:slug',
-        destination: 'http://localhost:8000/users/:slug',
+        destination: `${dataUrl}/users/:slug`,
       },
 
       {
         source: '/api/purchaseHistories',
-        destination: 'http://localhost:8000/purchaseHistories',
+        destination: `${dataUrl}/purchaseHistories`,
       },
       {
         source: '/api/purchaseHistories/:slug',
-        destination: 'http://localhost:8000/purchaseHistories/:slug',
+        destination: `${dataUrl}/purchaseHistories/:slug`,
       },
 
       {
         source: '/api/favorites',
-        destination: 'http://localhost:8000/favorites',
+        destination: `${dataUrl}/favorites`,
       },
       {
         source: '/api/favorites/:slug',
-        destination: 'http://localhost:8000/favorites/:slug',
+        destination: `${dataUrl}/favorites/:slug`,
       },
       {
         source: '/api/subscriptionCart',
-        destination: 'http://localhost:8000/subscriptionCart',
+        destination: `${dataUrl}/subscriptionCart`,
       },
       {
         source: '/api/subscriptionCart/:slug',
-        destination: 'http://localhost:8000/subscriptionCart/:slug',
+        destination: `${dataUrl}/subscriptionCart/:slug`,
       },
       {
         source: '/api/subscription',
-        destination: 'http://localhost:8000/subscription',
+        destination: `${dataUrl}/subscription`,
       },
       {
         source: '/api/subscription/:slug',
-        destination: 'http://localhost:8000/subscription/:slug',
+        destination: `${dataUrl}/subscription/:slug`,
       },
       {
         source: '/api/subscriptionHistories',
-        destination: 'http://localhost:8000/subscriptionHistories',
+        destination: `${dataUrl}/subscriptionHistories`,
       },
       {
         source: '/api/subscriptionHistories/:slug',
-        destination: 'http://localhost:8000/subscriptionHistories/:slug',
+        destination: `${dataUrl}/subscriptionHistories/:slug`,
       },
       {
         source: '/api/carts',
-        destination: 'http://localhost:8000/carts',
+        destination: `${dataUrl}/carts`,
       },
       {
         source: '/api/carts/:slug',
-        destination: 'http://localhost:8000/carts/:slug',
+        destination: `${dataUrl}carts/:slug`,
       },
       {
         source: '/',

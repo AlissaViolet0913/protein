@@ -63,6 +63,16 @@ const ItemData: React.FunctionComponent<{
           body: JSON.stringify(data),
         }
       );
+      fetch(
+        `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+      );
     });
   };
   // カート内の商品を消去[終わり]

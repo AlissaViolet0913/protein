@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { Users,Users2,Users3,User,Item } from '../types/type';
+import { Users, Users2, Users3, User, Item } from '../types/type';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -46,18 +46,23 @@ const ItemData: React.FunctionComponent<{
 
   // カート内の商品を消去[始まり]
   // fetch(`/api/carts/${cartItem.id})
-  const deleteCarts = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const deleteCarts = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     // const data = { deleted: true };
     event.preventDefault();
     const data = {};
     carts.forEach((cart: Item) => {
-      fetch(`http://localhost:8000/carts/${cart.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      fetch(
+        `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        }
+      );
     });
   };
   // カート内の商品を消去[終わり]

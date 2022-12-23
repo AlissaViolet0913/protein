@@ -3,16 +3,16 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   rewrites: async () => {
-    const dataUrl = process.env.NEXT_PUBLIC_PROTEIN_DATA
+    const dataUrl = process.env.NEXT_PUBLIC_PROTEIN_DATA;
     return [
-      {
-        source: '/api/items',
-        destination: `${dataUrl}/items`,
-      },
-      {
-        source: '/api/items/:slug',
-        destination: `${dataUrl}/items/:slug`,
-      },
+      // {
+      //   source: '/api/items',
+      //   destination: `${dataUrl}/items`,
+      // },
+      // {
+      //   source: '/api/items/:slug',
+      //   destination: `${dataUrl}/items/:slug`,
+      // },
 
       {
         source: '/api/users',
@@ -88,8 +88,10 @@ const nextConfig = {
   },
 };
 
-require('dotenv').config({ path: `./.env.${process.env.ENVIRONMENT}` })
+require('dotenv').config({
+  path: `./.env.${process.env.ENVIRONMENT}`,
+});
 
-module.exports = {}
+module.exports = {};
 
 module.exports = nextConfig;

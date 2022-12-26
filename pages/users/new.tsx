@@ -46,7 +46,7 @@ function UsersNew() {
     if (Object.keys(newErrors).length !== 0) {
       return isSubmit;
     } else {
-      fetch('/api/users', {
+      fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

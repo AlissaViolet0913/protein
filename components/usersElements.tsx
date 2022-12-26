@@ -68,7 +68,7 @@ export default function UsersElements({ user }: {user:Users}) {
     if (Object.keys(newErrors).length !== 0) {
       return isSubmit;
     } else {
-    fetch(`/api/users/${user.id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/users/${user.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

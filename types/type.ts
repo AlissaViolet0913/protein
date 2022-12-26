@@ -94,12 +94,27 @@ type Item = {
   name: string;
   imageUrl: string;
   category: string;
-  flavor: string[];
+  flavor: string[] | string;
   price: number;
   description: string;
   content: string;
   countity: number;
   event: any;
+};
+
+type Item2 = {
+  map(arg0: (cart: Item) => JSX.Element): import("react").ReactNode;
+  forEach(arg0: (element: Item) => void): unknown;
+  length: number;
+  userId: number;
+  itemId: number;
+  imageUrl: string;
+  name: string;
+  flavor: string;
+  price: number;
+  countity: number;
+  id: number;
+  carts: string[];
 };
 
 type Event = {
@@ -131,6 +146,6 @@ export type { User };
 export type { Users };
 export type { Users2 };
 export type { Users3 };
-export type { Item };
+export type { Item,Item2 };
 export type { Event };
 export type { Favorite };

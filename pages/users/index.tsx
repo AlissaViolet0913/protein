@@ -112,7 +112,7 @@ const UserDetails = ({
       items: items,
     };
     fetch(
-      `/api/subscriptionHistories/`,
+      `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionHistories/`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -126,7 +126,7 @@ const UserDetails = ({
 
   const deleteCarts = (items: Item) => {
     fetch(
-      `/api/subscription/${items.id}`,
+      `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscription/${items.id}`,
       {
         method: 'DELETE',
       }

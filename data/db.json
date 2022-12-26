@@ -354,98 +354,37 @@
       "deleted": false
     }
   ],
-  "favorites": [
-    {
-      "userId": 9,
-      "itemId": [
-        1
-      ],
-      "id": 1
-    }
-  ],
+  "favorites": [],
   "purchaseHistories": [],
-  "carts": [
+  "carts": [],
+  "subscriptionCart": [
     {
-      "userId": 1,
-      "itemId": 1,
-      "imageUrl": "/images/impact_whey_protein.jpg",
-      "name": "Impact ホエイ プロテイン",
-      "flavor": "チョコ",
+      "userId": 9,
+      "itemId": 5,
+      "imageUrl": "/images/impact_whey_stroberry.jpg",
+      "name": "Impact ホエイ プロテイン-ストロベリーヨーグルトフレーバー",
+      "flavor": "ヨーグルト-ストロベリー-",
       "price": 1990,
       "countity": 1,
       "id": 1
-    },
-    {
-      "userId": 1,
-      "itemId": 2,
-      "imageUrl": "/images/impact_whey_aisolate.jpg",
-      "name": "Impact ホエイ アイソレート",
-      "flavor": "チョコ",
-      "price": 4390,
-      "countity": 1,
-      "id": 2
-    },
-    {
-      "userId": 1,
-      "itemId": 2,
-      "imageUrl": "/images/impact_whey_aisolate.jpg",
-      "name": "Impact ホエイ アイソレート",
-      "flavor": "チョコ",
-      "price": 4390,
-      "countity": 1,
-      "id": 3
-    },
-    {
-      "userId": 1,
-      "itemId": 1,
-      "imageUrl": "/images/impact_whey_protein.jpg",
-      "name": "Impact ホエイ プロテイン",
-      "flavor": "チョコ",
-      "price": 1990,
-      "countity": 3,
-      "id": 4
-    },
-    {
-      "userId": 7,
-      "itemId": 2,
-      "imageUrl": "/images/impact_whey_aisolate.jpg",
-      "name": "Impact ホエイ アイソレート",
-      "flavor": "チョコ",
-      "price": 4390,
-      "countity": 1,
-      "id": 6
-    },
-    {
-      "userId": 7,
-      "itemId": 2,
-      "imageUrl": "/images/impact_whey_aisolate.jpg",
-      "name": "Impact ホエイ アイソレート",
-      "flavor": "チョコ",
-      "price": 4390,
-      "countity": 1,
-      "id": 8
-    },
-    {
-      "userId": 7,
-      "itemId": 3,
-      "imageUrl": "/images/probiotech_whey_protein.jpg",
-      "name": "プロバイオティック ホエイ プロテイン",
-      "flavor": "ミルクティー",
-      "price": 2190,
-      "countity": 1,
-      "id": 9
-    },
-    {
-      "userId": 9,
-      "itemId": 2,
-      "imageUrl": "/images/impact_whey_aisolate.jpg",
-      "name": "Impact ホエイ アイソレート",
-      "flavor": "チョコ",
-      "price": 4390,
-      "countity": 1,
-      "id": 10
     }
   ],
   "subscription": [],
-  "subscriptionHistories": []
+  "subscriptionHistories": [
+    {
+      "userId": 9,
+      "items": {
+        "userId": 9,
+        "itemId": 5,
+        "imageUrl": "/images/impact_whey_stroberry.jpg",
+        "name": "Impact ホエイ プロテイン-ストロベリーヨーグルトフレーバー",
+        "flavor": "ヨーグルト-ストロベリー-",
+        "price": 1990,
+        "countity": 1,
+        "id": 1,
+        "date": "2022/12/26 11:36:43"
+      },
+      "id": 1
+    }
+  ]
 }

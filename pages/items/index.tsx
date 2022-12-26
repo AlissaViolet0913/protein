@@ -21,7 +21,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const ItemDisplay: NextPage = () => {
   const [resource, setResource] = useState(
-    `/api/items`
+    `${process.env.NEXT_PUBLIC_PROTEIN}/api/items`
   );
   const [count, setCount] = useState(1);
   const [category, setCategory] = useState('');
@@ -40,17 +40,32 @@ const ItemDisplay: NextPage = () => {
 
   const inputref = useRef<HTMLInputElement>();
   //ページング
+  // useEffect(() => {
+  //   if (category) {
+  //     setResource(
+  //       `/api/items?flavor_like=${flavor}&category=${category}`
+  //     );
+  //   } else if (flavor) {
+  //     setResource(
+  //       `/api/items?flavor_like=${flavor}`
+  //     );
+  //   } else {
+  //     setResource(`/api/items`);
+  //   }
+  // }, [flavor, category]);
+
+  //ポストする
   useEffect(() => {
     if (category) {
       setResource(
-        `/api/items?flavor_like=${flavor}&category=${category}`
+        `${process.env.NEXT_PUBLIC_PROTEIN}/api/items?flavor_like=${flavor}&category=${category}`
       );
     } else if (flavor) {
       setResource(
-        `/api/items?flavor_like=${flavor}`
+        `${process.env.NEXT_PUBLIC_PROTEIN}/api/items?flavor_like=${flavor}`
       );
     } else {
-      setResource(`/api/items`);
+      setResource(`${process.env.NEXT_PUBLIC_PROTEIN}/api/items`);
     }
   }, [flavor, category]);
 

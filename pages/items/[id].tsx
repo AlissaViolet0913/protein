@@ -169,10 +169,13 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       return;
       // 数量0の場合はカートへ入れない
     } else if (Number(userId) == 0) {
-      return;
+        alert(
+          'ログイン後に商品購入可能です（会員登録してない方は会員登録をお願いします）'
+        );
+        router.push('/login');
     } else {
       fetch(
-        `/api/subscriptionCart/`,
+        `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionCart/`,
         {
           method: 'POST',
           headers: {

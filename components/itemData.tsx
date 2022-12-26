@@ -53,26 +53,13 @@ const ItemData: React.FunctionComponent<{
     event.preventDefault();
     const data = {};
     carts.forEach((cart: Item) => {
-      fetch(
-        `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      fetch(
-        `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
     });
   };
   // カート内の商品を消去[終わり]
@@ -204,7 +191,7 @@ const ItemData: React.FunctionComponent<{
               クレジット決済
             </button>
           </form>
-          <button className={styles.btnB} onClick={() => handler}>
+          <button className={styles.btnB} onClick={handler}>
             <span>代引き決済</span>
           </button>
         </section>

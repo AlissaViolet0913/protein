@@ -6,6 +6,7 @@ import Header from '../layout/header';
 import { User } from '../../types/type';
 import { Item } from '../../types/type';
 import { loadStripe } from '@stripe/stripe-js';
+import Footer from '../layout/footer';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -29,11 +30,13 @@ export const getServerSideProps: GetServerSideProps = async (
 
 export default function PurchaseCompletion({
   subscriptionCart2,
-}: {subscriptionCart2: Item}) {
+}: {
+  subscriptionCart2: Item;
+}) {
   return (
     <>
       <Header />
-      <hr />
+
       <div className={styles.main}>
         <div className={styles.element}>
           <div>
@@ -69,18 +72,16 @@ export default function PurchaseCompletion({
           <div>
             <br />
             <br />
-            <button
+            <a
               onClick={() => history.back()}
               className={styles.border}
             >
-              ←戻る
-            </button>
+              ←前の画面に戻る
+            </a>
           </div>
         </div>
       </div>
-      <footer className={styles.footer}>
-        <h1>RAKUTEIN</h1>
-      </footer>
+      <Footer />
     </>
   );
 }

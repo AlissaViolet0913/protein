@@ -39,21 +39,7 @@ const ItemDisplay: NextPage = () => {
   }, [resource, category, flavor, searchQuery, count]);
 
   const inputref = useRef<HTMLInputElement>();
-  //ページング
-  // useEffect(() => {
-  //   if (category) {
-  //     setResource(
-  //       `/api/items?flavor_like=${flavor}&category=${category}`
-  //     );
-  //   } else if (flavor) {
-  //     setResource(
-  //       `/api/items?flavor_like=${flavor}`
-  //     );
-  //   } else {
-  //     setResource(`/api/items`);
-  //   }
-  // }, [flavor, category]);
-
+  
   //ポストする
   useEffect(() => {
     if (category) {

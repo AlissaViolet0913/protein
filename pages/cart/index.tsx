@@ -6,26 +6,24 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Header from '../layout/header';
 import Footer from '../layout/footer';
-import { User,Item,Item2 } from '../../types/type';
+import { User, Item, Item2 } from '../../types/type';
+import { supabase } from "../../utils/supabase"; // supabaseをコンポーネントで使うときはかく
 
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const cookies = req.cookies;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
-  );
-  const carts = await res.json();
+  let { data } = await supabase.from("carts").select("*").eq("userId", cookies.id);
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
+  // );
+  // const carts = await res.json();
   return {
-    props: { carts, cookies }
+    props: { carts: data, cookies }
   };
 };
 
-// <{ user: User }> = ({ user }) => {
 
-
-const Cart:NextPage <{carts:Item2 ,cookies: Item }> = ({ carts, cookies }) => {
+const Cart: NextPage<{ carts: Item2, cookies: Item }> = ({ carts, cookies }) => {
   const [localData, setLocalData] = useState([]);
   const router = useRouter();
 
@@ -49,10 +47,11 @@ const Cart:NextPage <{carts:Item2 ,cookies: Item }> = ({ carts, cookies }) => {
   });
 
   // cartsの削除【始まり】
-  function deleteItem(cart: Item) {
-    fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/carts/${cart.id}`, {
-      method: 'DELETE',
-    });
+  async function deleteItem(cart: Item) {
+    await supabase.from("carts").delete().eq("id",cart.id)
+    // fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/carts/${cart.id}`, {
+    //   method: 'DELETE',
+    // });
     router.reload();
   }
   // cartsの削除【終わり】

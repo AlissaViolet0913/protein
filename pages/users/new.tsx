@@ -6,6 +6,7 @@ import Footer from '../layout/footer';
 import { Item } from '../../types/type';
 import { User, Users, Users2 } from '../../types/type';
 import { Event } from '../../types/type';
+import { supabase } from '../../utils/supabase';
 
 function UsersNew() {
   const router = useRouter();
@@ -32,34 +33,6 @@ function UsersNew() {
   const [formErrors, setFormErrors] = useState(initialValues);
   const [isSubmit, setIsSubmit] = useState(false);
   const [addressErrors, setAddressErrors] = useState('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  const Handler = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const newErrors = validate(formValues);
-    setFormErrors(newErrors);
-    setIsSubmit(true);
-    if (Object.keys(newErrors).length !== 0) {
-      return isSubmit;
-    } else {
-      fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formValues),
-      }).then(() => {
-        router.push('/login');
-        alert(
-          'ご登録ありがとうございます！ログインをしてお買い物を続けてください'
-        );
-      });
-    }
-  };
 
   const validate = (values: Users2) => {
     const errors = {} as Users;
@@ -110,6 +83,59 @@ function UsersNew() {
         '電話番号はXXX-XXXX-XXXXかXXXX-XX-XXXXの形式で入力してください';
     }
     return errors;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
+
+  const Handler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    let firstName = formValues.firstName;
+    let lastName = formValues.lastName;
+    let firstNameKana = formValues.firstNameKana;
+    let lastNameKana = formValues.lastNameKana;
+    let middleName = formValues.middleName;
+    let email = formValues.email;
+    let password = formValues.password;
+    let passwordConfirmation = formValues.passwordConfirmation;
+    let postCode = formValues.postCode;
+    let prefecture = formValues.prefecture;
+    let city = formValues.city;
+    let aza = formValues.aza;
+    let building = formValues.building;
+    let tel = formValues.tel;
+
+    const newErrors = validate(formValues);
+    setFormErrors(newErrors);
+    setIsSubmit(true);
+    if (Object.keys(newErrors).length !== 0) {
+      return isSubmit;
+    } else {
+      // let submit = async () => {
+        await supabase.from('users').insert({
+          firstName,
+          lastName,
+          firstNameKana,
+          lastNameKana,
+          middleName,
+          email,
+          password,
+          passwordConfirmation,
+          postCode,
+          prefecture,
+          city,
+          aza,
+          building,
+          tel,
+        });
+        router.push('/login');
+        alert(
+          'ご登録ありがとうございます！ログインをしてお買い物を続けてください'
+        );
+      }
+    // }
   };
 
   // 住所検索機能

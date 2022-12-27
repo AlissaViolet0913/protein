@@ -20,6 +20,6 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/cart/stripe.tsx"
-, "components/chatBotItem.jsx", "components/getCookie.js", "pages/chatbot.js"  ],
+, "components/chatBotItem.jsx", "components/getCookie.js", "pages/chatbot.js", "utils/supabase.js"  ],
   "exclude": ["node_modules"]
 }

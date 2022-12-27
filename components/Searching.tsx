@@ -45,7 +45,6 @@ export default function Searching({ handleSearch, inputref }: {handleSearch:any,
   //     .then((data) => setItems(data));
   // }, []);
 
-  // console.log(items);
   return (
     <>
       <form method="get" action="#" className={styles.search_box}>

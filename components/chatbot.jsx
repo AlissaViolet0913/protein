@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import ChatBotItem from './chatBotItem';
 import styles from '../styles/chatbot.module.css';
 import ImageDisplay from './imageDisplay';
+import { supabase } from "../utils/supabase"; // supabaseをコンポーネントで使うときはかく
 
 
 // チャットボットのコンポーネント
@@ -121,6 +122,7 @@ export default function ChatBotComponent(props) {
     const cookie = document.cookie;
     const userId = cookie.slice(3);
     const id = (Number(userId));
+    console.log(id)
     setUserId(id);
   }, []);
   // cookie取得【終わり】
@@ -129,9 +131,11 @@ export default function ChatBotComponent(props) {
   useEffect(() => {
     async function fetchData() {
       if (userId !== 0) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users/${userId}`);
-        const user = await res.json();
-        setUserDB(user)
+        let { data } = await supabase.from("users").select().eq("id", userId);
+        // const res = await fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users/${userId}`);
+        // const user = await res.json();
+        // const user = data[0];  
+        setUserDB(data[0])
       }
     }
     fetchData();
@@ -296,7 +300,7 @@ export default function ChatBotComponent(props) {
                   id: '2',
                   delay: 1000,
                   component: (
-                    <ImageDisplay userDB={userDB} />
+                    <ImageDisplay />
                   ),
                   trigger: 3,
                 },

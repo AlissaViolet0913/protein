@@ -17,7 +17,6 @@ export default function ItemDisplayNew({
   // const { data, error } = useSWR('/api/items', fetcher);
   // if (error) return <div>Failed to Load</div>;
   // if (!data) return <div>Loading...</div>;
-  console.log(data);
   return (
     <>
       <div className={styles.side}>

@@ -124,6 +124,7 @@ export default function FavoriteList({ itemsArray4 }: Favorite) {
             );
           })}
         </section>
+        <Link href="/items">←HOMEへ戻る</Link>
       </div>
       <Footer />
     </>

@@ -16,12 +16,19 @@ import Searching from '../../components/Searching';
 import { Users, Users2, Users3, User, Item } from '../../types/type';
 import TooltipButton from '../../components/tooltipButton';
 import Footer from '../layout/footer';
+import { supabase } from "../../utils/supabase";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const ItemDisplay: NextPage = () => {
+  const data2 = async() =>{
+  let { data :{uni} }: { data: any; error: any } = await supabase
+      .from("items")
+      .select("*")
+  }
+  console.log(data2)
   const [resource, setResource] = useState(
-    `${process.env.NEXT_PUBLIC_PROTEIN}/api/items`
+    `data2`
   );
   const [count, setCount] = useState(1);
   const [category, setCategory] = useState('');
@@ -39,7 +46,7 @@ const ItemDisplay: NextPage = () => {
   }, [resource, category, flavor, searchQuery, count]);
 
   const inputref = useRef<HTMLInputElement>();
-  
+
   //ポストする
   useEffect(() => {
     if (category) {
@@ -51,11 +58,11 @@ const ItemDisplay: NextPage = () => {
         `${process.env.NEXT_PUBLIC_PROTEIN}/api/items?flavor_like=${flavor}`
       );
     } else {
-      setResource(`${process.env.NEXT_PUBLIC_PROTEIN}/api/items`);
+      setResource(`data2`);
     }
   }, [flavor, category]);
 
-  const { data, error } = useSWR(resource, fetcher);
+  const { data, error } = useSWR(`/api/supabase`, fetcher);
   if (error) return <div>Failed to Load</div>;
   if (!data) return <div>Loading...</div>;
 

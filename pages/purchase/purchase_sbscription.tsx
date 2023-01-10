@@ -6,34 +6,47 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Footer from '../layout/footer';
 import { Item } from '../../types/type';
+import React from 'react';
+import { supabase } from "../../utils/supabase";
 
 export const getServerSideProps: GetServerSideProps = async (
   context
 ) => {
   const cookies = context.req.cookies;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscriptionCart?userId=${cookies.id}`
-  );
-  const subscriptionCart = await res.json();
 
-  const subscriptionCart2 = subscriptionCart.slice(-1)[0];
+  const subscriptionCart = await supabase.from("subscriptionCart").select("*").eq("userId", cookies.id);
+  const subscriptionCart3 = subscriptionCart.data!;
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscriptionCart?userId=${cookies.id}`
+  // );
+  // const subscriptionCart = await res.json();
+
+  const subscriptionCart2 = subscriptionCart3.slice(-1)[0];
   //購入時間
-  subscriptionCart.forEach((cart: Item) => {
+  subscriptionCart3.forEach((cart: Item) => {
     cart.date = new Date().toLocaleString('ja-JP');
   });
-  const subscription = {
-    userId: cookies.id,
-    id: subscriptionCart2.id,
-    items: subscriptionCart2,
-  };
-  await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscription`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(subscription),
-    }
-  );
+
+    const userId = Number(cookies.id)
+    const id = subscriptionCart2.id
+    const items = subscriptionCart2
+
+
+
+    await supabase.from('subscription').insert({
+      userId,
+      id,
+      items
+    });
+
+  // await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscription`,
+  //   {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(subscription),
+  //   }
+  // );
 
   return {
     props: { subscriptionCart2 },

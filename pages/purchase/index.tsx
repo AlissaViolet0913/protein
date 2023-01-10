@@ -5,26 +5,40 @@ import { GetServerSideProps } from 'next';
 import Header from '../layout/header';
 import Footer from '../layout/footer';
 import { Item,User } from '../../types/type';
+import { supabase } from "../../utils/supabase";
+import React from 'react';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   const cookies = req.cookies;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users?id=${cookies.id}`
-  );
-  const users = await res.json();
-  const user = users[0];
+  const cookie = cookies.id
+  //userの情報を取得
+  const user2 = await supabase.from("users").select().eq("id", cookies.id);
+ let user = user2.data![0];
 
-  const resCarts = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
-  );
-  const carts = await resCarts.json();
+ //userの情報取得（fetchの部分）
+  // await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users?id=${cookies.id}`
+  // );
+  // const users = await res.json();
+  // const user = users[0];
+
+  //cartsの情報を取得
+  const carts2 = await supabase.from("carts").select().eq("userId", cookies.id);
+  const carts = carts2.data;
+
+  // cartsの情報を取得（fetchの部分）
+  // const resCarts = await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
+  // );
+  // const carts = await resCarts.json();
 
   return {
     props: {
       user: user,
       carts: carts,
+      cookie:cookie,
     },
   };
 };
@@ -32,9 +46,12 @@ export const getServerSideProps: GetServerSideProps = async ({
 export default function PurchaseDisplay({
   user,
   carts,
+  cookie,
 }: {
   user: User;
   carts: Item;
+  cookie:number;
+
 }) {
   // const {user,carts} = props
 
@@ -47,7 +64,7 @@ export default function PurchaseDisplay({
           <title>ご注文内容確認</title>
           <meta name="turbolinks-visit-control" />
         </Head>
-        <ItemData user={user} carts={carts} />
+        <ItemData user={user} carts={carts} cookie={cookie} />
       </div>
       <Footer />
     </>

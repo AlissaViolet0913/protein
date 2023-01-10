@@ -10,20 +10,25 @@ import TelEdit from './telEdit';
 import PasswordEdit from './passwordEdit';
 import router, { useRouter } from 'next/router';
 import { Users,Users2,Users3,User,Item } from '../types/type';
+import { supabase } from '../utils/supabase';
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-}) => {
-  const cookies = req.cookies;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users?id=${cookies.id}`
-  );
-  const users = await res.json();
-  const user = users[0];
-  return {
-    props: { user },
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async ({
+//   req,
+// }) => {
+//     const cookies = req.cookies;
+//     const cookie = cookies.id;
+//     const users = await supabase.from("users").select().eq("id",cookie);
+
+//   // const res = await fetch(
+//   //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users?id=${cookies.id}`
+//   // );
+//   // const users = await res.json();
+
+//   const user = users.data![0];
+//   return {
+//     props: { user },
+//   };
+// };
 
 export default function UsersElements({ user }: {user:Users}) {
   const [readOnly, setReadOnly] = useState(true);
@@ -31,6 +36,7 @@ export default function UsersElements({ user }: {user:Users}) {
     setReadOnly((prev) => !prev);
     // readOnlyの初期値（true）を反転させる
   };
+
   const initialValues = {
     firstName: user.firstName,
     lastName: user.lastName,
@@ -58,7 +64,7 @@ export default function UsersElements({ user }: {user:Users}) {
   const [isSubmit, setIsSubmit] = useState(false);
 
 
-  function submit(e: SyntheticEvent) {
+  async function submit(e: SyntheticEvent) {
     e.preventDefault();
 
     const newErrors = validate(formValues);
@@ -68,13 +74,14 @@ export default function UsersElements({ user }: {user:Users}) {
     if (Object.keys(newErrors).length !== 0) {
       return isSubmit;
     } else {
-    fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/users/${user.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formValues),
-    }).then(() => {
+      await supabase.from("users").update(formValues).eq("id",user.id)
+    // fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/users/${user.id}`, {
+    //   method: 'PATCH',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(formValues),
+    .then(() => {
       router.reload();
     });
   }

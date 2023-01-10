@@ -7,6 +7,8 @@ import { User } from '../../types/type';
 import { Item } from '../../types/type';
 import { loadStripe } from '@stripe/stripe-js';
 import Footer from '../layout/footer';
+import React from 'react';
+import { supabase } from "../../utils/supabase";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -16,12 +18,14 @@ export const getServerSideProps: GetServerSideProps = async (
   context
 ) => {
   const cookies = context.req.cookies;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscriptionCart?userId=${cookies.id}`
-  );
-  const subscriptionCart = await res.json();
+  const subscriptionCart = await supabase.from("subscriptionCart").select("*").eq("userId", cookies.id);
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscriptionCart?userId=${cookies.id}`
+  // );
+  // const subscriptionCart = await res.json();
+  let subscriptionCart3 = subscriptionCart.data!;
 
-  const subscriptionCart2 = subscriptionCart.slice(-1)[0];
+  const subscriptionCart2 = subscriptionCart3.slice(-1)[0];
 
   return {
     props: { subscriptionCart2 },

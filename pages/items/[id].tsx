@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps = async ({
   // );
   // const detail = await res.json();
   const detail = data[0];
-  console.log(data);
+  console.log(detail);
   return {
     props: { detail },
     revalidate: 10,
@@ -143,23 +143,28 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   // cookie取得【終わり】
 
   // localstrageへ保存【始まり】
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (!document.cookie) {
+  //     localStorage.setItem(
+  //       carts.itemId as any,
+  //       JSON.stringify(cartsForStrage)
+  //     );
+  //   }
+  // }, [count]);
+  // localstrageへ保存【終わり】
+
+  const handler = async () => {
+    // 数量0の場合はカートへ入れない
+    // if (count === 0) {
+    //   return;
     if (!document.cookie) {
       localStorage.setItem(
         carts.itemId as any,
         JSON.stringify(cartsForStrage)
       );
-    }
-  }, [count]);
-  // localstrageへ保存【終わり】
-
-  const handler = async () => {
-    // 数量0の場合はカートへ入れない
-    if (count === 0) {
-      return;
-    } else if (userId === '') {
       router.push('/cart');
-    } else {
+    }
+    else {
       await supabase.from('carts').insert({
         userId,
         itemId,
@@ -190,8 +195,8 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   };
 
   //サブスクリプション
-  const Subscription = () => {
-    const SubscriptionCart = {
+  const Subscription = async () => {
+    const subscriptionCart = {
       userId: Number(userId),
       itemId: detail.id,
       imageUrl: detail.imageUrl,
@@ -209,18 +214,28 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       );
       router.push('/login');
     } else {
-      fetch(
-        `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionCart/`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(SubscriptionCart),
-        }
-      ).then(() => {
-        router.push(`/items/subscription`);
+      await supabase.from('subscriptionCart').insert({
+        userId,
+        itemId,
+        imageUrl,
+        name,
+        flavor,
+        price,
+        countity,
       });
+      // fetch(
+      //   `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionCart/`,
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(SubscriptionCart),
+      //   }
+      // )
+      // .then(() => {
+        router.push(`/items/subscription`);
+      // });
     }
   };
 

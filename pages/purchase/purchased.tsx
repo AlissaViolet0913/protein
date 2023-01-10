@@ -6,48 +6,72 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Footer from '../layout/footer';
 import { Item } from '../../types/type';
+import React from 'react';
+import { supabase } from "../../utils/supabase"; // supabaseをコンポーネントで使うときはかく
 
-export const getServerSideProps: GetServerSideProps = async (
-  context
-) => {
-  const cookies = context.req.cookies;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
-  );
-  const carts = await res.json();
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const cookies = req.cookies;
+  let { data }: any = await supabase
+    .from('carts')
+    .select()
+    .eq('userId', cookies.id);
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
+  // );
+  // const carts = await res.json();
+
+  console.log(`data:${data[0]}`)
+  const carts = data;
+
   //購入時間
   carts.forEach((cart: Item) => {
+    console.log(`cartsData:${cart}`)
     cart.date = new Date().toLocaleString('ja-JP');
   });
-  const purchaseHistories = {
-    userId: cookies.id,
-    items: carts,
-  };
-  await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/purchaseHistories`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(purchaseHistories),
-    }
-  ).then(() => {
-    carts.forEach((cart: Item) => {
-      fetch(
-        `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(purchaseHistories),
-        }
-      );
-    });
-  });
+
+  // const purchaseHistories = {
+  //   userId: cookies.id,
+  //   items: carts,
+  // };
+
+  const userId = cookies.id;
+  const items = carts;
+
+  if (items.length > 0) {
+    await supabase.from("purchaseHistories")
+      .insert({ userId, items })
+    // await fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/purchaseHistories`,
+    //   {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(purchaseHistories),
+    //   }
+    // )
+    // .then(() => {
+    // carts.forEach((cart: Item) => {
+    await supabase
+      .from('carts')
+      .delete()
+      .eq('userId', userId)
+  }
+  // fetch(
+  //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts/${cart.id}`,
+  //   {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(purchaseHistories),
+  //   }
+  // );
+  // });
   return {
     props: { carts },
   };
 };
+
 
 export default function PurchaseCompletion() {
   return (

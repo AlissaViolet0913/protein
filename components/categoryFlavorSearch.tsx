@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import styles from 'styles/items_index.module.css';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { Users, User, Item } from '../types/type';
+import React from 'react';
 
 export default function CategoryFlavorSearch({
   flavor,

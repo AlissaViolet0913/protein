@@ -12,7 +12,7 @@ import { supabase } from "../../utils/supabase"; // supabaseをコンポーネ�
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const cookies = req.cookies;
-  let { data } = await supabase.from("carts").select("*").eq("userId", cookies.id);
+  let { data }: { data: any } = await supabase.from("carts").select("*").eq("userId", cookies.id);
   // const res = await fetch(
   //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts?userId=${cookies.id}`
   // );
@@ -29,7 +29,7 @@ const Cart: NextPage<{ carts: Item2, cookies: Item }> = ({ carts, cookies }) => 
 
   // Local Storageからカートに追加した商品データ取得
   useEffect(() => {
-    if (carts.length === 0) {
+    if (carts === null) {
       const collection = Object.keys(localStorage).map((key) => {
         let keyJson = JSON.stringify(key);
         return {
@@ -48,7 +48,7 @@ const Cart: NextPage<{ carts: Item2, cookies: Item }> = ({ carts, cookies }) => 
 
   // cartsの削除【始まり】
   async function deleteItem(cart: Item) {
-    await supabase.from("carts").delete().eq("id",cart.id)
+    await supabase.from("carts").delete().eq("id", cart.id)
     // fetch(`${process.env.NEXT_PUBLIC_PROTEIN}/api/carts/${cart.id}`, {
     //   method: 'DELETE',
     // });
@@ -66,10 +66,12 @@ const Cart: NextPage<{ carts: Item2, cookies: Item }> = ({ carts, cookies }) => 
   // cartsの合計【始まり】
   const priceArray: number[] = [];
 
-  carts.forEach((element: Item) => {
-    const multiPrice = element.price * element.countity;
-    priceArray.push(multiPrice);
-  });
+  if (carts !== null) {
+    carts.forEach((element: Item) => {
+      const multiPrice = element.price * element.countity;
+      priceArray.push(multiPrice);
+    });
+  }
 
   const initialValue = 0;
   const sumPrice = priceArray.reduce(

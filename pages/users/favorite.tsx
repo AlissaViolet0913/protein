@@ -5,45 +5,36 @@ import Header from '../layout/header';
 import Footer from '../layout/footer';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Favorite, Item } from '../../types/type';
+import { supabase } from "../../utils/supabase";
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-}) => {
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const cookies = req.cookies;
+  let { data }: any = await supabase
+    .from('favorites')
+    .select('*')
+    .eq('userId', cookies.id);
 
-  let favs;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/favorites?userId=${cookies.id}`
-  );
-  favs = await res.json();
-
-  const itemsArray = favs.map((fav: Item) => {
-    return `id=${fav.itemId}`;
+  let favs = data;
+  let itemsArray = favs.map((fav: any) => {
+    return fav.id;
   });
-  // console.log(favs);
-  const Array = itemsArray.join('&');
-  // console.log(Array);
 
-  const data = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/items?${Array}`
-  );
-  // console.log(data);
-
-  const itemsArray2 = await data.json();
-  //空の配列を作るために存在しないid=0を指定した。
-  const data2 = await fetch(
-    `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/items?id=0`
+  itemsArray = await Promise.all(
+    itemsArray.map(async (array: any) => {
+      let { data }: any = await supabase
+        .from("items")
+        .select()
+        .eq("id", array)
+      return data[0];
+    })
   );
 
-  const itemsArray3 = await data2.json();
-
-  let itemsArray4 = '';
-  if (Array) {
-    itemsArray4 = itemsArray2;
-  } else {
-    itemsArray4 = itemsArray3;
+  let itemsArray4 = [];
+  if (itemsArray) {
+    itemsArray4 = itemsArray;
   }
 
   return {
@@ -52,15 +43,17 @@ export const getServerSideProps: GetServerSideProps = async ({
 };
 
 export default function FavoriteList({ itemsArray4 }: Favorite) {
+  console.log(`itemsArray4:${itemsArray4}`)
   const router = useRouter();
   // お気に入り情報の削除
-  function deleteItem(favoriteItem: Favorite) {
-    fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN}/api/favorites/${favoriteItem.id}`,
-      {
-        method: 'DELETE',
-      }
-    );
+  async function deleteItem(favoriteItem: Favorite) {
+    await supabase.from("favorites").delete().eq("id", favoriteItem.id)
+    // fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN}/api/favorites/${favoriteItem.id}`,
+    //   {
+    //     method: 'DELETE',
+    //   }
+    // );
     router.reload();
   }
 
@@ -103,7 +96,7 @@ export default function FavoriteList({ itemsArray4 }: Favorite) {
                       <div>
                         価格 &nbsp;&nbsp;&nbsp;&nbsp; ¥
                         <span className={styles.style}>
-                          &nbsp;{favoriteItem.price.toLocaleString()}
+                          &nbsp;{favoriteItem.price}
                           &nbsp;
                         </span>
                       </div>

@@ -8,6 +8,8 @@ import Image from 'next/image';
 import ItemDisplay from './items';
 import { GetServerSideProps } from 'next';
 import { Item, User, Users } from './../types/type';
+import { supabase } from "../utils/supabase";
+
 
 export default function UserLogin(cookieData: Item) {
   const router = useRouter();
@@ -26,7 +28,7 @@ export default function UserLogin(cookieData: Item) {
         value: JSON.parse(localStorage.getItem(key) as string),
       };
     });
-    setLocalData(collection as React.SetStateAction<never[]>) ;
+    setLocalData(collection as React.SetStateAction<never[]>);
   }, []);
 
   //"ally-supports-cache"などを除外 (Local Storageの中の商品情報以外を削除)
@@ -36,11 +38,16 @@ export default function UserLogin(cookieData: Item) {
 
   // ユーザーIDの取得&POST(onSubmitのタイミングで発火)
   const postUserdata = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users?email=${email}&password=${password}`
-    );
-    const json = await res.json();
-    const id = await json[0].id;
+    let { data }: any = await supabase
+      .from("users")
+      .select()
+      .eq("email", email)
+      .eq("password", password);
+    // const res = await fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users?email=${email}&password=${password}`
+    // );
+    // const json = await res.json();
+    const id = await data[0].id;
     // console.log(id) id出てくる OK
     return id;
     //　idを返す
@@ -56,9 +63,7 @@ export default function UserLogin(cookieData: Item) {
     console.log(data)
     fetch(`/api/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(data),
     })
       .then((response) => {
@@ -66,30 +71,41 @@ export default function UserLogin(cookieData: Item) {
         if (response.status !== 200) {
           setVisible(true);
         } else if (response.status === 200) {
-          filteredData.forEach(async (data: any) => {
-            data.value.userId = await postUserdata();
+          if (filteredData) {
+            filteredData.forEach(async (data: any) => {
+              data.value.userId = await postUserdata();
 
-            filteredData.forEach((data: Item) => {
-              fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data.value),
+              let userId = data.value.userId;
+              let itemId = data.value.itemId;
+              let imageUrl = data.value.imageUrl;
+              let name = data.value.name;
+              let flavor = data.value.flavor;
+              let price = data.value.price;
+              let countity = data.value.countity;
+
+              await supabase.from('carts').insert({
+                userId,
+                itemId,
+                imageUrl,
+                name,
+                flavor,
+                price,
+                countity,
+                // fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts`, {
+                //   method: 'POST',
+                //   headers: {
+                //     'Content-Type': 'application/json',
+                //   },
+                //   body: JSON.stringify(data.value),
+                // });
               });
-            });
-          });
-          localStorage.clear();
-          router.push('/items');
+              localStorage.clear();
+            })
+            router.push('/items');
+          }
         }
       })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  }
 
   return (
     <div>

@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import styles from 'styles/items_index.module.css';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { setTokenSourceMapRange } from 'typescript';
+import React from 'react';
 
 
 export default function CategoryTypeSearch({

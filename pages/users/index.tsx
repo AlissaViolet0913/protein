@@ -9,6 +9,8 @@ import UsersElements from '../../components/usersElements';
 import { useRouter } from 'next/router';
 import Footer from '../layout/footer';
 import { Item } from '../../types/type';
+import { supabase } from '../../utils/supabase';
+import React from 'react';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -17,72 +19,101 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const cookies = req.cookies;
   const cookie = Number(cookies.id);
+  // console.log(cookie)
+  // let user = { id: cookies.id };
+  // try {
+    const users = await supabase.from("users").select("*").eq("id", cookie);
+    const user = users.data![0];
+    console.log(user);
 
-  let user = { id: cookies.id };
+    // const res = await fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users/${cookies.id}`
+    // );
+    // user = await res.json();
+  // } catch (err) {
+  //   console.error('failed to get user', err);
+  //   errors.push('ユーザー情報の取得に失敗しました。リロードしてください。');
+  // }
+
+  //supabaseにて購入履歴(purchaseHistories)の情報を取得
+  const itemsArray2 = await supabase.from('purchaseHistories').select("*").eq("userId",cookie);
+  const itemsArray3 = itemsArray2.data!;
+  const itemsArray4: Item[] = [];
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users/${cookies.id}`
-    );
-    user = await res.json();
-  } catch (err) {
-    console.error('failed to get user', err);
-    errors.push('情報の取得に失敗しました。リロードしてください。');
-  }
+  itemsArray3.forEach((element) => {
+    const items = element.items;
 
-  const itemsArray: Item[] = [];
-  try {
-    const resHistories = await fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/purchaseHistories?userId=${cookies.id}`
-    );
-    const history: Item = await resHistories.json();
-    history.forEach((element) => {
-      const items = element.items;
-
-      items.forEach((item: Item) => {
-        itemsArray.push(item);
-      });
+    items.forEach((item: Item) => {
+      itemsArray4.push(item);
     });
-  } catch (err) {
-    console.error('failed to get purchaseHistories', err);
-    errors.push('情報の取得に失敗しました。リロードしてください。');
-  }
+  });
+} catch (err) {
+  // console.error('failed to get purchaseHistories', err);
+  errors.push('履歴情報の取得に失敗しました。リロードしてください。');
+}
+
+  // 購入履歴のfetchで取得している部分（一応、残しています）
+  // const itemsArray: Item[] = [];
+  // try {
+  //   const resHistories = await fetch(
+  //     `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/purchaseHistories?userId=${cookies.id}`
+  //   );
+  //   const history: Item = await resHistories.json();
+  //   history.forEach((element) => {
+  //     const items = element.items;
+
+  //     items.forEach((item: Item) => {
+  //       itemsArray.push(item);
+  //     });
+  //   });
+  // } catch (err) {
+  //   console.error('failed to get purchaseHistories', err);
+  //   errors.push('情報の取得に失敗しました。リロードしてください。');
+  // }
+
   //サブスク
   const subscriptionArray: Item[] = [];
-  try {
-    const regular = await fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscription?userId=${cookies.id}`
-    );
-    const leave = await regular.json();
+  const subscriptionArray2 = await supabase.from('subscription').select("*").eq("userId",cookie);
+  const subscriptionArray3 = subscriptionArray2.data!;
 
-    leave.forEach((element: Item) => {
+  try {
+    // const regular = await fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscription?userId=${cookies.id}`
+    // );
+    // const leave = await regular.json();
+
+    subscriptionArray3.forEach((element: Item) => {
       const items = element.items;
       subscriptionArray.push(items);
     });
   } catch (err) {
-    console.error('failed to get subscription', err);
-    errors.push('情報の取得に失敗しました。リロードしてください。');
+    // console.error('failed to get subscription', err);
+    errors.push('サブスク情報の取得に失敗しました。リロードしてください。');
   }
 
   //サブスクの履歴
   const subscriptionHistoriesArray: Item[] = [];
+  const subscriptionHistoriesArray2 = await supabase.from('subscriptionHistories').select("*").eq("userId",cookie);
+  const subscriptionHistoriesArray3 = subscriptionHistoriesArray2.data!;
+
   try {
-    const past = await fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscriptionHistories?userId=${cookies.id}`
-    );
-    const remain = await past.json();
-    remain.forEach((element: Item) => {
+    // const past = await fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN_DATA}/subscriptionHistories?userId=${cookies.id}`
+    // );
+    // const remain = await past.json();
+    subscriptionHistoriesArray3.forEach((element: Item) => {
       const items = element.items;
       subscriptionHistoriesArray.push(items);
     });
   } catch (err) {
-    console.error('failed to get subscriptionHistories', err);
-    errors.push('情報の取得に失敗しました。リロードしてください。');
+    // console.error('failed to get subscriptionHistories', err);
+    errors.push('サブスク履歴情報の取得に失敗しました。リロードしてください。');
   }
 
   return {
     props: {
       user,
-      itemsArray,
+      itemsArray4,
       subscriptionArray,
       subscriptionHistoriesArray,
       cookie,
@@ -92,46 +123,49 @@ export const getServerSideProps: GetServerSideProps = async ({
 };
 
 const UserDetails = ({
+  data,
   user,
   subscriptionArray,
-  itemsArray,
+  itemsArray4,
   subscriptionHistoriesArray,
   cookie,
   errors,
 }: any) => {
   //サブスクからサブスク購入履歴への処理
-
   const router = useRouter();
-  const handler = (items: Item) => {
+  const handler =  async (items: Item) => {
     subscriptionArray.forEach((cart: Item) => {
       cart.date = new Date().toLocaleString('ja-JP');
     });
 
-    const purchaseHistories = {
-      userId: cookie,
-      items: items,
-    };
-    fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionHistories/`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(purchaseHistories),
-      }
-    ).then(() => {
+    // const purchaseHistories = {
+    //   userId: cookie,
+    //   items: items,
+    // };
+    const userId = cookie;
+    // fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscriptionHistories/`,
+    //   {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify(purchaseHistories),
+    //   }
+    // )
+    await supabase.from('subscriptionHistories').insert({userId,items}).then(() => {
       deleteCarts(items);
       router.reload();
     });
   };
 
-  const deleteCarts = (items: Item) => {
-    fetch(
-      `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscription/${items.id}`,
-      {
-        method: 'DELETE',
-      }
-    );
-    router.reload();
+  const deleteCarts = async (items: Item) => {
+    await supabase.from('subscription').delete().eq("id",items.id);
+    // fetch(
+    //   `${process.env.NEXT_PUBLIC_PROTEIN}/api/subscription/${items.id}`,
+    //   {
+    //     method: 'DELETE',
+    //   }
+    // );
+    // router.reload();
   };
 
   return (
@@ -186,7 +220,7 @@ const UserDetails = ({
           <h2 className={styles.title_purchased} id="user_purchased">
             ご購入履歴
           </h2>
-          {itemsArray.map((item: any, index: any) => {
+          {itemsArray4.map((item: any, index: any) => {
             return (
               <div key={index}>
                 <div>

@@ -356,24 +356,157 @@
   ],
   "favorites": [
     {
-      "userId": 3,
+      "userId": 0,
       "itemId": [
-        1
+        4
       ],
-      "id": 1
+      "id": 4
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 5
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 6
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 7
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 8
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 9
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 10
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 11
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 12
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 13
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 14
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 15
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 16
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 17
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 18
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 19
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 20
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 21
+    },
+    {
+      "userId": "1",
+      "items": [],
+      "id": 22
+    },
+    {
+      "userId": "1",
+      "items": [
+        {
+          "id": 4,
+          "userId": 1,
+          "itemId": 5,
+          "imageUrl": "/images/impact_whey_stroberry.jpg",
+          "name": "Impact ホエイ プロテイン-ストロベリーヨーグルトフレーバー",
+          "flavor": "ヨーグルト-ストロベリー-",
+          "price": 1990,
+          "countity": 3,
+          "date": "2023/1/4 10:48:32"
+        }
+      ],
+      "id": 23
+    },
+    {
+      "userId": "1",
+      "items": [
+        {
+          "id": 4,
+          "userId": 1,
+          "itemId": 5,
+          "imageUrl": "/images/impact_whey_stroberry.jpg",
+          "name": "Impact ホエイ プロテイン-ストロベリーヨーグルトフレーバー",
+          "flavor": "ヨーグルト-ストロベリー-",
+          "price": 1990,
+          "countity": 3,
+          "date": "2023/1/4 10:48:33"
+        }
+      ],
+      "id": 24
     }
   ],
-  "purchaseHistories": [],
   "carts": [
     {
-      "userId": 3,
+      "userId": 7,
+      "itemId": 2,
+      "imageUrl": "/images/impact_whey_aisolate.jpg",
+      "name": "Impact ホエイ アイソレート",
+      "flavor": "チョコ",
+      "price": 4390,
+      "countity": 1,
+      "id": 2
+    },
+    {
+      "userId": 7,
       "itemId": 1,
       "imageUrl": "/images/impact_whey_protein.jpg",
       "name": "Impact ホエイ プロテイン",
       "flavor": "チョコ",
       "price": 1990,
       "countity": 1,
-      "id": 1
+      "id": 3
     }
   ],
   "subscriptionCart": [
@@ -396,6 +529,16 @@
       "price": 1990,
       "countity": 1,
       "id": 2
+    },
+    {
+      "userId": 1,
+      "itemId": 16,
+      "imageUrl": "/images/the_whey.jpg",
+      "name": "THE ホエイ",
+      "flavor": "ミルクチョコレート",
+      "price": 6490,
+      "countity": 1,
+      "id": 3
     }
   ],
   "subscription": [
@@ -415,5 +558,21 @@
       }
     }
   ],
-  "subscriptionHistories": []
+  "subscriptionHistories": [
+    {
+      "userId": 1,
+      "items": {
+        "userId": 1,
+        "itemId": 16,
+        "imageUrl": "/images/the_whey.jpg",
+        "name": "THE ホエイ",
+        "flavor": "ミルクチョコレート",
+        "price": 6490,
+        "countity": 1,
+        "id": 3,
+        "date": "2022/12/28 15:42:28"
+      },
+      "id": 1
+    }
+  ]
 }

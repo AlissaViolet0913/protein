@@ -68,7 +68,11 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   const [count, setCount] = React.useState(1);
   const [total, setTotal] = React.useState(detail.price);
   const [userId, setUserId] = React.useState('');
-  const [flavor, setFlavor] = React.useState(detail.flavor[0]);
+  const [flavor, setFlavor] = React.useState('');
+
+  const flavor2: any = detail.flavor;
+  let strChangeFlavor = flavor2.replace(/{|"|\\|}|/g, '');
+  const arrFlavor = strChangeFlavor.split(',');
 
   //　数量変更
   const addHandlerNext = (sub: number) => {
@@ -163,8 +167,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
         JSON.stringify(cartsForStrage)
       );
       router.push('/cart');
-    }
-    else {
+    } else {
       await supabase.from('carts').insert({
         userId,
         itemId,
@@ -234,7 +237,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       //   }
       // )
       // .then(() => {
-        router.push(`/items/subscription`);
+      router.push(`/items/subscription`);
       // });
     }
   };
@@ -308,11 +311,11 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
               className={styles.select}
               onChange={(e) => setFlavor(e.target.value)}
             >
-              <option>{detail.flavor[0]}</option>
-              <option>{detail.flavor[1]}</option>
-              <option>{detail.flavor[2]}</option>
-              <option>{detail.flavor[3]}</option>
-              <option>{detail.flavor[4]}</option>
+              <option>{arrFlavor[0]}</option>
+              <option>{arrFlavor[1]}</option>
+              <option>{arrFlavor[2]}</option>
+              <option>{arrFlavor[3]}</option>
+              <option>{arrFlavor[4]}</option>
             </select>
           </div>
           <div className={styles.quantity}>

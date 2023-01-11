@@ -269,7 +269,12 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       itemIdFav,
       id,
     });
-    router.push('/users/favorite');
+    if (document.cookie !== '') {
+      router.push('/users/favorite');
+    } else {
+      alert('ログインをしてください');
+      router.push('/login');
+    }
     //
     // fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/favorites`, {
     //   method: 'POST',

@@ -76,8 +76,8 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   const [userId, setUserId] = React.useState('');
   const [flavor, setFlavor] = React.useState('');
 
-  const flavor2:any = detail.flavor;
-  let strChangeFlavor = flavor2.replace(/{|"|\\|}|/g, "");
+  const flavor2: any = detail.flavor;
+  let strChangeFlavor = flavor2.replace(/{|"|\\|}|/g, '');
   const arrFlavor = strChangeFlavor.split(',');
 
   //　数量変更
@@ -173,8 +173,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
         JSON.stringify(cartsForStrage)
       );
       router.push('/cart');
-    }
-    else {
+    } else {
       await supabase.from('carts').insert({
         userId,
         itemId,
@@ -244,7 +243,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       //   }
       // )
       // .then(() => {
-        router.push(`/items/subscription`);
+      router.push(`/items/subscription`);
       // });
     }
   };
@@ -270,7 +269,12 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       itemIdFav,
       id,
     });
-    router.push('/users/favorite');
+    if (document.cookie !== '') {
+      router.push('/users/favorite');
+    } else {
+      alert('ログインをしてください');
+      router.push('/login');
+    }
     //
     // fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/favorites`, {
     //   method: 'POST',

@@ -154,7 +154,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
     const user = document.cookie;
     let userId = '';
     if (document.cookie.includes('; __stripe_mid=')) {
-      userId = user.slice(3);
+      userId = user.slice(3, 4);
     } else {
       userId = user.slice(-1);
     }
@@ -177,7 +177,68 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
     // 数量0の場合はカートへ入れない
     // if (count === 0) {
     //   return;
+    // if (!document.cookie) {
+    //   localStorage.setItem(
+    //     carts.itemId as any,
+    //     JSON.stringify(cartsForStrage)
+    //   );
+    //   router.push('/cart');
+    // } else {
+    //   await supabase.from('carts').insert({
+    //     userId,
+    //     itemId,
+    //     imageUrl,
+    //     name,
+    //     flavor,
+    //     price,
+    //     countity,
+    //   }); // 入れたい("テーブル名")と({カラム名})
+    // fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(carts),
+    // })
+    // () => {
+    // if (document.cookie !== '')
+    // {
+    // router.push('/cart');
+    // } else {
+    //   alert('カートに追加するにはログインが必要です');
+    //   router.push('/');
+    //
+    // }
+    // };
     if (!document.cookie) {
+      localStorage.setItem(
+        carts.itemId as any,
+        JSON.stringify(cartsForStrage)
+      );
+      router.push('/cart');
+    } else if (document.cookie.includes(`; id=`)) {
+      await supabase.from('carts').insert({
+        userId,
+        itemId,
+        imageUrl,
+        name,
+        flavor,
+        price,
+        countity,
+      });
+      router.push('/cart');
+    } else if (document.cookie.includes('; __stripe_mid=')) {
+      await supabase.from('carts').insert({
+        userId,
+        itemId,
+        imageUrl,
+        name,
+        flavor,
+        price,
+        countity,
+      });
+      router.push('/cart');
+    } else if (document.cookie.includes('__stripe_mid=')) {
       localStorage.setItem(
         carts.itemId as any,
         JSON.stringify(cartsForStrage)
@@ -192,24 +253,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
         flavor,
         price,
         countity,
-      }); // 入れたい("テーブル名")と({カラム名})
-      // fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/carts`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(carts),
-      // })
-      // () => {
-      // if (document.cookie !== '')
-      // {
-      router.push('/cart');
-      // } else {
-      //   alert('カートに追加するにはログインが必要です');
-      //   router.push('/');
-      //
-      // }
-      // };
+      });
     }
   };
 

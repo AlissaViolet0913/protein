@@ -1,3 +1,58 @@
+# プロジェクトの概要
+
+プロテインの EC サイト。
+商品の在庫に制限なし。
+
+# 使用方法、インストール方法、実行方法
+
+- パッケージインストール
+
+```
+npm init
+# or
+yarn
+```
+
+- インストールするライブラリ
+  "@fortawesome/fontawesome-svg-core": "^6.2.1",
+  "@fortawesome/free-regular-svg-icons": "^6.2.1",
+  "@fortawesome/free-solid-svg-icons": "^6.2.1",
+  "@fortawesome/react-fontawesome": "^0.2.0",
+  "@react-spring/web": "^9.6.0",
+  "@splidejs/react-splide": "^0.7.12",
+  "@supabase/supabase-js": "^2.2.0",
+  "@types/formidable": "^2.0.5",
+
+- サーバー起動
+
+```
+npm run dev
+# or
+yarn dev
+```
+
+```
+# and
+yarn mock-api
+```
+
+- テストログイン
+
+```
+メールアドレス:test@test.com
+パスワード:protein
+
+- テストクレカ決済
+
+```
+
+カード番号
+4242 4242 4242 4242
+有効期限
+未来日付ならいつでも良い
+セキュリティコード
+3 桁何でもよい
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -32,3 +87,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+```
+
+```

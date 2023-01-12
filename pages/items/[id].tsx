@@ -145,9 +145,19 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   // ローカルストレージへ追加【終わり】
 
   // cookie取得【始まり】
+  // useEffect(() => {
+  //   const user = document.cookie;
+  //   const userId = user.slice(3);
+  //   setUserId(userId);
+  // }, []);
   useEffect(() => {
     const user = document.cookie;
-    const userId = user.slice(3);
+    let userId = '';
+    if (document.cookie.includes('; __stripe_mid=')) {
+      userId = user.slice(3);
+    } else {
+      userId = user.slice(-1);
+    }
     setUserId(userId);
   }, []);
   // cookie取得【終わり】

@@ -19,7 +19,12 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/cart/stripe.tsx"
-, "components/chatBotItem.jsx", "components/getCookie.js", "pages/chatbot.js", "utils/supabase.js"  ],
+    "pages/cart/stripe.tsx",
+    "components/chatBotItem.jsx",
+    "components/getCookie.js",
+    "pages/chatbot.js",
+    "utils/supabase.js",
+    "components/chatbot.jsx"
+  ],
   "exclude": ["node_modules"]
 }

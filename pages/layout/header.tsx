@@ -19,9 +19,18 @@ export default function Header() {
   const moveToCart = () => {
     router.push('/cart');
   };
-
   const moveToFavorite = () => {
-    if (document.cookie !== '') {
+    if (document.cookie == '') {
+      alert('ログインをしてください');
+      router.push('/login');
+    } else if (document.cookie.includes(`; id=`)) {
+      router.push('/users/favorite');
+    } else if (document.cookie.includes('; __stripe_mid=')) {
+      router.push('/users/favorite');
+    } else if (document.cookie.includes('__stripe_mid=')) {
+      alert('ログインをしてください');
+      router.push('/login');
+    } else if (document.cookie !== '') {
       router.push('/users/favorite');
     } else {
       alert('ログインをしてください');
@@ -30,7 +39,17 @@ export default function Header() {
   };
 
   const moveToUsers = () => {
-    if (document.cookie !== '') {
+    if (document.cookie == '') {
+      alert('ログインをしてください');
+      router.push('/login');
+    } else if (document.cookie.includes(`; id=`)) {
+      router.push('/users');
+    } else if (document.cookie.includes('; __stripe_mid=')) {
+      router.push('/users');
+    } else if (document.cookie.includes('__stripe_mid=')) {
+      alert('ログインをしてください');
+      router.push('/login');
+    } else if (document.cookie !== '') {
       router.push('/users');
     } else {
       alert('ログインをしてください');

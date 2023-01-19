@@ -120,7 +120,6 @@ export default function ChatBotComponent(props) {
   // }, []);
   useEffect(() => {
     const cookie = document.cookie;
-
     let userId = '';
     if (document.cookie.includes('; __stripe_mid=')) {
       userId = cookie.slice(3, 4);
@@ -128,7 +127,6 @@ export default function ChatBotComponent(props) {
       userId = cookie.slice(-1);
     }
     const id = Number(userId);
-
     setUserId(id);
   }, []);
 
@@ -138,14 +136,17 @@ export default function ChatBotComponent(props) {
   useEffect(() => {
     async function fetchData() {
 
+
       if (document.cookie == '') {
         setUserDB('');
       } else if (document.cookie.includes(`; id=`)) {
+
 
         let { data } = await supabase
           .from('users')
           .select()
           .eq('id', userId);
+
 
         setUserDB(data[0]);
       } else if (document.cookie.includes('; __stripe_mid=')) {
@@ -164,6 +165,7 @@ export default function ChatBotComponent(props) {
         setUserDB(data[0]);
       } else {
         setUserDB('');
+
 
       }
     }
@@ -184,9 +186,9 @@ export default function ChatBotComponent(props) {
   const waiting = useDelay(300);
 
   return (
-    <>
 
       {userDB ? (
+
         <div>
           {!waiting && (
             <ChatBot

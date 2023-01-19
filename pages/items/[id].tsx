@@ -78,7 +78,9 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   const [count, setCount] = React.useState(1);
   const [total, setTotal] = React.useState(detail.price);
   const [userId, setUserId] = React.useState('');
+
   const [flavor, setFlavor] = React.useState(arrFlavor[0]);
+
 
   //　数量変更
   const addHandlerNext = (sub: number) => {
@@ -216,6 +218,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
         JSON.stringify(cartsForStrage)
       );
       router.push('/cart');
+
     } else if (document.cookie.includes(`; id=`)) {
       await supabase.from('carts').insert({
         userId,
@@ -228,6 +231,7 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
       });
       router.push('/cart');
     } else if (document.cookie.includes('; __stripe_mid=')) {
+
       await supabase.from('carts').insert({
         userId,
         itemId,

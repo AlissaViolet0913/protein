@@ -70,15 +70,15 @@ const ItemDetail: NextPage<{ detail: Item }> = ({ detail }) => {
   // const [userId, setUserId] = React.useState('');
   // const [flavor, setFlavor] = React.useState(detail.flavor[0]);
 
+  const flavor2: any = detail.flavor;
+  let strChangeFlavor = flavor2.replace(/{|"|\\|}|/g, '');
+  const arrFlavor = strChangeFlavor.split(',');
+
   const router = useRouter();
   const [count, setCount] = React.useState(1);
   const [total, setTotal] = React.useState(detail.price);
   const [userId, setUserId] = React.useState('');
-  const [flavor, setFlavor] = React.useState('');
-
-  const flavor2: any = detail.flavor;
-  let strChangeFlavor = flavor2.replace(/{|"|\\|}|/g, '');
-  const arrFlavor = strChangeFlavor.split(',');
+  const [flavor, setFlavor] = React.useState(arrFlavor[0]);
 
   //　数量変更
   const addHandlerNext = (sub: number) => {

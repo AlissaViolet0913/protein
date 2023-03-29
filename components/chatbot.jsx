@@ -111,13 +111,6 @@ export default function ChatBotComponent(props) {
   ];
 
   // cookie取得【始まり】
-  // useEffect(() => {
-  //   const cookie = document.cookie;
-  //   const userId = cookie.slice(3);
-  //   const id = (Number(userId));
-  //   console.log(id)
-  //   setUserId(id);
-  // }, []);
   useEffect(() => {
     const cookie = document.cookie;
     let userId = '';
@@ -129,44 +122,20 @@ export default function ChatBotComponent(props) {
     const id = Number(userId);
     setUserId(id);
   }, []);
-
   // cookie取得【終わり】
 
   // dbからuserId取得【始まり】
   useEffect(() => {
     async function fetchData() {
-
-
-      if (document.cookie == '') {
-        setUserDB('');
-      } else if (document.cookie.includes(`; id=`)) {
-
-
+      if (userId !== 0) {
         let { data } = await supabase
           .from('users')
           .select()
           .eq('id', userId);
-
-
+        // const res = await fetch(`${process.env.NEXT_PUBLIC_PROTEIN_DATA}/users/${userId}`);
+        // const user = await res.json();
+        // const user = data[0];
         setUserDB(data[0]);
-      } else if (document.cookie.includes('; __stripe_mid=')) {
-        let { data } = await supabase
-          .from('users')
-          .select()
-          .eq('id', userId);
-        setUserDB(data[0]);
-      } else if (document.cookie.includes('__stripe_mid=')) {
-        setUserDB('');
-      } else if (document.cookie !== '') {
-        let { data } = await supabase
-          .from('users')
-          .select()
-          .eq('id', userId);
-        setUserDB(data[0]);
-      } else {
-        setUserDB('');
-
-
       }
     }
     fetchData();
@@ -186,9 +155,8 @@ export default function ChatBotComponent(props) {
   const waiting = useDelay(300);
 
   return (
-
-      {userDB ? (
-
+    <>
+      {userId !== 0 ? (
         <div>
           {!waiting && (
             <ChatBot

@@ -16,29 +16,35 @@ import Searching from '../../components/Searching';
 import { Users, Users2, Users3, User, Item } from '../../types/type';
 import TooltipButton from '../../components/tooltipButton';
 import Footer from '../layout/footer';
-import { supabase } from '../../utils/supabase';
+import { supabase } from "../../utils/supabase";
 import React from 'react';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const ItemDisplay: NextPage = (data3: any) => {
-  console.log(data3);
-  console.log('きた');
-  console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/item`);
+
+const ItemDisplay: NextPage = (data3:any) => {
   const router = useRouter();
   // async function data2(){
   //     let a =await supabase.from("items").select("*")
   //     console.log(a.data!)
   // }
 
-  const [resource, setResource] = useState('');
+
+
+
+
+  const [resource, setResource] = useState(
+    ''
+  );
   const [count, setCount] = useState(1);
   const [category, setCategory] = useState('');
   const [flavor, setFlavor] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showchatbot, setShowChatbot] = useState(false);
+
 
   //検索、絞り込み、商品詳細のクリック以外の何もしない時間が5秒あればチャットボット出現させる
   useEffect(() => {
@@ -50,35 +56,6 @@ const ItemDisplay: NextPage = (data3: any) => {
   }, [resource, category, flavor, searchQuery, count]);
 
   const inputref = useRef<HTMLInputElement>();
-
-  //ポストする
-  useEffect(() => {
-    if (category) {
-      setResource(
-        // `${process.env.NEXT_PUBLIC_PROTEIN}/api/items?flavor_like=${flavor}&category=${category}`
-        `${process.env.BACKEND_URL}/search`
-      );
-    } else if (flavor) {
-      setResource(
-        // `${process.env.NEXT_PUBLIC_PROTEIN}/api/items?flavor_like=${flavor}`
-        `${process.env.BACKEND_URL}/search/flavor`
-      );
-    } else {
-      setResource(
-        // `${process.env.NEXT_PUBLIC_PROTEIN}/api/items`
-        `${process.env.BACKEND_URL}/item`
-      );
-    }
-  }, [flavor, category]);
-
-  const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/item`,
-    fetcher
-  );
-  if (error) return <div>Failed to Load</div>;
-  if (!data) return <div>Loading...</div>;
-
-  console.log(data);
 
   //ポストする
   // useEffect( () => {
@@ -106,21 +83,21 @@ const ItemDisplay: NextPage = (data3: any) => {
     setCategory(e.target.value);
     router.push({
       pathname: '/items',
-      query: { category: e.target.value, flavor: flavor },
+      query: { category: e.target.value,flavor: flavor },
     });
   };
 
   // フレーバー検索イベント
   const flavorHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+
     setFlavor(e.target.value);
     router.push({
       pathname: '/items',
-      query: { category: category, flavor: e.target.value },
+      query: { category: category,flavor: e.target.value },
     });
   };
 
-  // const searchData = data3.data3.filter((item: Item) => {
-  const searchData = data.filter((item: Item) => {
+  const searchData = data3.data3.filter((item: Item) => {
     return (
       searchQuery.length === 0 || item.name.match(searchQuery)
       // 検索BOXに値がない場合のmap、searchQueryに入っている値とdb.jsonのnameと合致する商品のみ表示するmap
@@ -133,9 +110,11 @@ const ItemDisplay: NextPage = (data3: any) => {
   let value = '';
   if (flavor || (category && count >= 2)) {
     value = searchData.slice(0, pageSize);
-  } else if (totalCount <= 7) {
+  }
+  else if(totalCount <=7){
     value = searchData.slice(0, pageSize);
-  } else {
+  }
+  else {
     value = searchData.slice(startIndex, startIndex + pageSize);
   }
 
@@ -267,28 +246,26 @@ const ItemDisplay: NextPage = (data3: any) => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (
-//   context
-// ) => {
-//   const category = context.query.category;
-//   const flavor = context.query.flavor;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const category = context.query.category;
+  const flavor = context.query.flavor;
 
-//   let query = supabase.from('items').select();
+  let query = supabase.from('items').select();
+  
+  if (flavor) {
+    query = query.like('flavor', `%${flavor}%`);
+  }
+  if (category) {
+    query = query.eq('category', category);
+  }
+  const data2 = await query;
+  const data3 = data2.data!;
 
-//   if (flavor) {
-//     query = query.like('flavor', `%${flavor}%`);
-//   }
-//   if (category) {
-//     query = query.eq('category', category);
-//   }
-//   const data2 = await query;
-//   const data3 = data2.data!;
-
-//   return {
-//     props: {
-//       data3: data3,
-//     },
-//   };
-// };
+  return {
+    props: {
+       data3:data3
+    },
+  };
+};
 
 export default ItemDisplay;
